@@ -26,7 +26,33 @@
             
             
             //andrea pon el tuyo por aca y borras el texto
-            
+             socket.on('sum_noVotes', function(data){
+              console.log('total de Gatos  votos: '+ JSON.stringify(data.response));
+              $('#showNos').html(JSON.stringify(data.response));
+              no_votes = JSON.stringify(data.response);
+              return no_votes;
+            });
+
+            socket.on('sum_all', function(data){
+              console.log('total de votos: '+ JSON.stringify(data.response));
+              all_votes = JSON.stringify(data.response);
+              return all_votes;
+            });
+        })
+    </script>
+</head>
+
+<body>
+  
+  <div id="results"></div>
+  <h1>Encuesta Con WS</h1>
+	<h2>¿Que prefieres? Perros o Gatos</h2>
+      <form class="button-position" id="voteButton"><br/>
+            <p style="background-color:rgb(29, 28, 28);"> <strong>Elija una opción</strong> </p>
+            <input type="radio" name="vote" value="yes" id="yesButton"> Perros <br>
+            <input type="radio" name="vote" value="no" id="noButton"> Gatos <br />
+
+      <p> <strong>Resultados</strong> </p>
             
             <p>Numero de personas por Perros: <span id="showYesses"></span> </p> 
       <p>Numero de Personas por Gatos: <span id="showNos"></span></p><br/>
