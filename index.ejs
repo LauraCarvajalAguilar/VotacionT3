@@ -23,9 +23,34 @@
             var all_votes;
             var yes_votes;
             var no_votes;
-            
-            
-            //andrea pon el tuyo por aca y borras el texto
+      
+        $('#voteButton').click(function() {
+              if ($('#yesButton').is(':checked')) { 
+                console.log('Votando Perros en el servidor'); 
+                if (!votedBefore){
+                  votedBefore = true;
+                  socket.emit("vote", {newVote: "newYes"});
+                } else {
+                  socket.emit("vote", {newVote: "changeToYes"});
+                }
+              } else if($('#noButton').is(':checked')) {
+                console.log('Votando Gatos en el servidor'); 
+                if (!votedBefore){
+                  votedBefore = true;
+                  socket.emit("vote", {newVote: "newNo"});
+                } else {
+                  socket.emit("vote", {newVote: "changeToNo"});
+                }
+              }
+            });
+
+            socket.on('sum_yesVotes', function(data){
+              console.log('total de Perros votos: '+ data.response);
+               $('#showYesses').html(JSON.stringify(data.response));
+               yes_votes = JSON.stringify(data.response);
+              return yes_votes;
+            });
+	    
              socket.on('sum_noVotes', function(data){
               console.log('total de Gatos  votos: '+ JSON.stringify(data.response));
               $('#showNos').html(JSON.stringify(data.response));
