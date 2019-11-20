@@ -20,3 +20,32 @@ var io = require('socket.io').listen(server);
 
 io.sockets.on('connection', function (socket) {
 	console.log("Se iniciara elconteo de votos!!");server
+}
+
+io.emit('sum_yesVotes', {response: yesVotes});
+	io.emit('sum_noVotes', {response: noVotes});
+
+	
+	socket.on("vote", function (data){
+	    console.log('Se a conto un voto de:' + data.newVote);
+	    if (data.newVote == 'newYes') {
+	    	yesVotes += 1;
+	    	console.log("Ahora contamos con "+ yesVotes +" votos para perros y "+ noVotes +" votos para gatos!");
+	    	io.emit('sum_yesVotes', {response: yesVotes});
+	    	io.emit('sum_all', {response: (yesVotes + noVotes)});
+	    	return yesVotes;
+	    } else if (data.newVote == 'newNo') {
+	    	noVotes += 1;
+	    	console.log("Ahora contamos con "+ yesVotes +" votos para perros y "+ noVotes +" votos para gatos!");
+	    	io.emit('sum_noVotes', {response: noVotes});
+	    	io.emit('sum_all', {response: (yesVotes + noVotes)});
+	    	return noVotes;
+	    } 
+	});
+
+	socket.on("button_clicked", function (data){
+	    console.log('Alguien selecciono una opcion, reaccion: ' + data.reason);
+	    socket.emit('server_response', {response: "sockets are the best!"});
+	});
+
+})
